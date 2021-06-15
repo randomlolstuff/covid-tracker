@@ -1,0 +1,13 @@
+.display-flex {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.confirm-box-wrapper {
+  border: 2px solid;
+  padding: 5px;
+  min-height: 10%;
+  min-width: 10%;
+  background: blanchedalmond;
+}

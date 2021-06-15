@@ -1,0 +1,17 @@
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.search-input {
+  border: 2px solid burlywood;
+}
+
+.title-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 50px;
+}
