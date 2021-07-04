@@ -4,24 +4,32 @@ import Chart from "./chart";
 import ChartRow from "./chartRow";
 import { debounce } from "./debounce";
 import "./home.css";
+import { useSelector } from "react-redux";
 
-const Home = React.memo(({ masterData }) => {
+const Home = React.memo(() => {
+  const store = useSelector((state) => state);
+  const [sortRow, setSortRow] = useState(false);
+  console.log("home comp", store);
   let totalConfirmed = 0;
   let totalDeceased = 0;
   let totalRecovered = 0;
   let totalCases = {};
+  const allStateData = { masterData: {} };
   const [searchString, setSearchString] = useState("");
+  if (!sortRow) {
+    allStateData.masterData = store.allStateData.masterData;
+  }
 
   const stateRows = useCallback(
-    Object.keys(masterData.masterData).map((item) => {
-      let stateTotal = masterData.masterData[item].total;
+    Object.keys(allStateData.masterData).map((item) => {
+      let stateTotal = allStateData.masterData[item].total;
       if (stateTotal.confirmed)
         totalConfirmed = totalConfirmed + stateTotal.confirmed;
       if (stateTotal.recovered)
         totalRecovered = totalRecovered + stateTotal.recovered;
       if (stateTotal.deceased)
         totalDeceased = totalRecovered + stateTotal.deceased;
-      let name = masterData.masterData[item].name.toLowerCase();
+      let name = allStateData.masterData[item].name.toLowerCase();
 
       if (name.includes(searchString.toLowerCase()))
         return (
@@ -36,6 +44,10 @@ const Home = React.memo(({ masterData }) => {
   }, 1000);
   const handleChange = (e) => {
     debouncesetSearchedString(e.target.value);
+  };
+
+  const handleSortName = () => {
+    console.log("sort names");
   };
 
   return (
@@ -60,7 +72,7 @@ const Home = React.memo(({ masterData }) => {
 
       <TrackerBoxes displayCases={totalCases} />
 
-      <Chart state={true} />
+      <Chart state={true} handleSortName={handleSortName} />
       {stateRows}
     </div>
   );

@@ -4,8 +4,10 @@ import TrackerBoxes from "./casesBoxes";
 import ChartRow from "./chartRow";
 import "./state.css";
 import Chart from "./chart";
+import { useSelector } from "react-redux";
 
 const State = React.memo(({ masterData }) => {
+  const store = useSelector((state) => state);
   let recordExist = false;
   let totalConfirmed = 0;
   let totalDeceased = 0;
@@ -15,8 +17,8 @@ const State = React.memo(({ masterData }) => {
   id = id.toUpperCase();
   let selectedStateData = {};
 
-  if (masterData.masterData[id]) {
-    selectedStateData = masterData.masterData[id];
+  if (store.allStateData.masterData[id]) {
+    selectedStateData = store.allStateData.masterData[id];
     totalConfirmed = selectedStateData.total.confirmed;
     totalDeceased = selectedStateData.total.deceased;
     totalRecovered = selectedStateData.total.recovered;
