@@ -2,44 +2,18 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 import Home from "./home";
 import State from "./state";
-import { stateAbbrevations } from "./stateAbbrevations";
 import { useDispatch, useStore, useSelector } from "react-redux";
-import fun from "./generalUtility/apiHandler";
+import { getMasterData } from "./actions/asynActions";
 
 const PrimaryData = React.memo(() => {
   const store = useSelector((state) => state);
   console.log("store use selector", store);
   const dispatch = useDispatch();
-  const apiResponseGenerator = (response) => {
-    const responseCopy = {};
-    Object.keys(response.data).map((item) => {
-      item = item.toUpperCase();
-      responseCopy[item] = {
-        ...response.data[item],
-        name: stateAbbrevations[item] || "Invalid Name",
-      };
-
-      {
-      }
-    });
-    console.log("api generator res", responseCopy);
-    return responseCopy;
-  };
 
   useEffect(() => {
     const diffMil = Date.now() - localStorage.getItem("masterDataExpiry");
     if (!localStorage.getItem("masterData") || diffMil > 24 * 60 * 60 * 1000) {
-      dispatch(
-        fun(
-          "https://api.covid19india.org/v4/min/data.min.json",
-          [
-            "SET_MASTER_DATA_LOADING",
-            "SET_MASTER_DATA_SUCESS",
-            "SET_MASTER_DATA_ERROR",
-          ],
-          apiResponseGenerator
-        )
-      ).then((response) => {
+      dispatch(getMasterData).then((response) => {
         localStorage.setItem("masterData", JSON.stringify(response));
         localStorage.setItem("masterDataExpiry", Date.now());
       });

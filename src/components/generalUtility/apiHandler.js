@@ -1,8 +1,7 @@
 import { useDispatch } from "react-redux";
-import React from "react";
 const axios = require("axios");
 
-const fun = (url, actions, fn) => {
+const createAsyncActions = (url, actions, fn) => {
   return (dispatch, store) => {
     console.log("fun funct", url, actions, dispatch, fn);
     return apiHandler(url, actions, dispatch, fn);
@@ -30,4 +29,4 @@ const apiHandler = (apiUrl, action, dispatch, fn) => {
     });
 };
 
-export default fun;
+export default createAsyncActions;
